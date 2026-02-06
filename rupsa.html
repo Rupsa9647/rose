@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Rose Day My Love 🌹</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Comic Sans MS', cursive;
+    background:linear-gradient(135deg,#ff4d6d,#590d22);
+    height:100vh;
+    overflow:hidden;
+    color:white;
+}
+
+/* ===== PAGE SYSTEM ===== */
+.page{
+    display:none;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    text-align:center;
+}
+.page.active{
+    display:block;
+}
+
+/* ===== COMMON ===== */
+h1{
+    margin-top:20px;
+    font-size:3em;
+    text-shadow:0 0 20px pink;
+}
+
+button{
+    padding:15px 35px;
+    font-size:1.2em;
+    border:none;
+    border-radius:30px;
+    background:#ff1e56;
+    color:white;
+    cursor:pointer;
+}
+button:hover{ transform:scale(1.1); }
+
+/* ===== PAGE 1 ===== */
+.photo img{
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    border:6px solid white;
+    margin-top:20px;
+}
+
+.box{
+    background:rgba(255,255,255,0.25);
+    width:85%;
+    margin:25px auto;
+    padding:20px;
+    border-radius:25px;
+    font-size:1.3em;
+}
+
+/* ===== GAME PAGE ===== */
+.roses{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:25px;
+    margin-top:40px;
+}
+
+.rose{
+    font-size:60px;
+    cursor:pointer;
+    transition:0.3s;
+}
+.rose:hover{ transform:scale(1.3); }
+
+.correct-rose img{
+    width:60px;
+    height:60px;
+    cursor:pointer;
+    transition:0.3s;
+}
+.correct-rose img:hover{ transform:scale(1.3); }
+
+.tease{
+    margin-top:20px;
+    font-size:1.6em;
+    color:#ffd6e0;
+}
+
+/* ===== LOVE RAIN ===== */
+.rain{
+    position:absolute;
+    top:-50px;
+    animation:fall linear forwards;
+    z-index:5;
+}
+@keyframes fall{
+    0%{ transform:translateY(0); opacity:1; }
+    100%{ transform:translateY(110vh); opacity:0; }
+}
+
+.love-text{
+    position:fixed;
+    top:40%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:3em;
+    font-weight:bold;
+    text-shadow:0 0 25px pink;
+    z-index:6;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ========= PAGE 1 ========= -->
+<div class="page active" id="page1">
+    <h1>🌹 Happy Rose Day My Love 🌹</h1>
+
+    <div class="photo">
+        <img src="https://drive.google.com/file/d/1Z6x7cS6OXRRkEj2UXMLairtEfwSpp107/view?usp=sharing" alt="My Love">
+    </div>
+
+    <div class="box">
+       Dear Abhishek 😎❤️<br><br>
+       You are my rose 🌹 because:<br>
+      ✔ You love me endlessly and take care of me like I’m your princess 👑<br>
+      ✔ You make me feel wanted, cherished, and insanely special 😘<br>
+      ✔ Even when I’m annoying, dramatic, and disturb you 24/7, you still choose me every time 😆❤️<br>
+✔  And yes… you know exactly how to make me weak(ofcourse in bed), happy, and smiling 😏<br><br>
+        Ready for a small challenge? 😜
+    </div>
+
+    <button onclick="goToGame()">Start Game 🎮</button>
+</div>
+
+<!-- ========= PAGE 2 ========= -->
+<div class="page" id="page2">
+    <h1>Choose The Most Beautiful Rose 🌹</h1>
+
+    <div class="roses">
+        <div class="rose" onclick="wrongChoice()">🌹</div>
+        <div class="rose" onclick="wrongChoice()">🌷</div>
+
+        <!-- ONLY CORRECT ANSWER -->
+        <div class="correct-rose" onclick="rightChoice()">
+            <img src="C:\Users\pc\Pictures\me3.jpeg" alt="Correct Rose">
+        </div>
+
+        <div class="rose" onclick="wrongChoice()">🌺</div>
+        <div class="rose" onclick="wrongChoice()">🌸</div>
+    </div>
+
+    <div class="tease" id="teaseText"></div>
+</div>
+
+<!-- ========= AUDIO ========= -->
+<audio id="bgMusic" loop>
+    <source src="song1.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="wrongSound">
+    <source src="wrong.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="rightSound">
+    <source src="song_wright.mpeg" type="audio/mpeg">
+</audio>
+
+<script>
+/* 🎵 PLAY BACKGROUND MUSIC ON FIRST USER INTERACTION */
+function startBackgroundMusic(){
+    const bg = document.getElementById("bgMusic");
+    bg.play();
+    document.removeEventListener("click", startBackgroundMusic);
+}
+document.addEventListener("click", startBackgroundMusic);
+
+/* 🎮 START GAME */
+function goToGame(){
+    const bg = document.getElementById("bgMusic");
+    bg.pause();
+    bg.currentTime = 0;
+
+    document.getElementById("page1").classList.remove("active");
+    document.getElementById("page2").classList.add("active");
+}
+
+/* ❌ WRONG CHOICE */
+function wrongChoice(){
+    document.getElementById("teaseText").innerHTML =
+        "❌yea rose pasand aya apko !! 😏Gand may dal dungi  <br>Try again bokachoda";
+    const w = document.getElementById("wrongSound");
+    w.currentTime = 0;
+    w.play();
+}
+
+/* ✅ RIGHT CHOICE */
+function rightChoice(){
+    document.getElementById("teaseText").innerHTML = "";
+    document.getElementById("rightSound").play();
+    rainLove();
+}
+
+/* 💖 LOVE RAIN */
+function rainLove(){
+    const loveText = document.createElement("div");
+    loveText.className = "love-text";
+    loveText.innerHTML = "I LOVE YOU TOO 💖💋";
+    document.body.appendChild(loveText);
+
+    for(let i=0;i<70;i++){
+        createRain(Math.random()>0.5 ? "💋" : "I LOVE YOU TOO");
+    }
+}
+
+function createRain(content){
+    const el = document.createElement("div");
+    el.className = "rain";
+    el.innerHTML = content;
+    el.style.left = Math.random()*100 + "vw";
+    el.style.fontSize = content === "💋" ? "28px" : "18px";
+    el.style.animationDuration = (Math.random()*3 + 3) + "s";
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),6000);
+}
+</script>
+
+</body>
+</html>
